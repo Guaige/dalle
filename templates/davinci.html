@@ -9,7 +9,7 @@
 </head>
 
 <body>
-  <img src="{{ url_for('static', filename='dog.png') }}" class="icon" />
+  <a href="/"><img src="{{ url_for('static', filename='dog.png') }}" class="icon"/></a>
   <h3>随便聊个天</h3>
   <form action="/davinci" method="post">
     <input type="text" name="animal" placeholder="问点儿问题" required />

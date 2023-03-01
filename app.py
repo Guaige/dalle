@@ -1,5 +1,4 @@
 import os, time
-
 import openai
 from flask import Flask, redirect, render_template, request, url_for
 
@@ -25,16 +24,7 @@ def dalle():
         print('time_gen : ', time.time() - since)
         since = time.time()
         image_url = response['data'][0]['url']
-        """
-        response = openai.Completion.create(
-            model="text-davinci-003",
-            prompt=generate_prompt(animal),
-            temperature=0.6,
-        )
-        return redirect(url_for("index", result=response.choices[0].text))
-        """
         return redirect(url_for("dalle", result=response['data'][0]['url']))
-        #return redirect(url_for("index", result=animal))
     result = request.args.get("result")
     return render_template("dalle.html", result=result)
 
@@ -56,14 +46,6 @@ def codex():
         print('time_gen : ', time.time() - since)
         since = time.time()
         codes = response['choices'][0]['text']
-        """
-        response = openai.Completion.create(
-            model="text-davinci-003",
-            prompt=generate_prompt(animal),
-            temperature=0.6,
-        )
-        return redirect(url_for("index", result=response.choices[0].text))
-        """
         return redirect(url_for("codex", result=response['choices'][0]['text']))
     result = request.args.get("result")
     return render_template("codex.html", result=result)
@@ -87,15 +69,7 @@ def davinci():
         print('time_gen : ', time.time() - since)
         since = time.time()
         answer = response['choices'][0]['text']
-        """
-        response = openai.Completion.create(
-            model="text-davinci-003",
-            prompt=generate_prompt(animal),
-            temperature=0.6,
-        )
-        return redirect(url_for("index", result=response.choices[0].text))
-        """
-        return redirect(url_for("davinci", result=response['choices'][0]['text']))
+        return redirect(url_for("davinci", result=animal + response['choices'][0]['text']))
     result = request.args.get("result")
     return render_template("davinci.html", result=result)
 

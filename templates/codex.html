@@ -9,7 +9,7 @@
 </head>
 
 <body>
-  <img src="{{ url_for('static', filename='dog.png') }}" class="icon" />
+  <a href="/"><img src="{{ url_for('static', filename='dog.png') }}" class="icon"/></a>
   <h3>写点儿代码</h3>
   <form action="/codex" method="post">
     <input type="text" name="animal" placeholder="写点儿需求" required />
