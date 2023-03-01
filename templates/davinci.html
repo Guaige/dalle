@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<head>
+  <title>guaigetv_v2</title>
+  <link
+    rel="shortcut icon"
+    href="{{ url_for('static', filename='dog.png') }}"
+  />
+  <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
+</head>
+
+<body>
+  <img src="{{ url_for('static', filename='dog.png') }}" class="icon" />
+  <h3>随便聊个天</h3>
+  <form action="/davinci" method="post">
+    <input type="text" name="animal" placeholder="问点儿问题" required />
+    <input type="submit" value="给我答" />
+  </form>
+  {% if result %}  
+  </br></br>
+  <textarea style="width: 500px;height: 1000px;">{{result}}</textarea>
+
+  {% endif %}
+</body>

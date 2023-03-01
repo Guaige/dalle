@@ -6,28 +6,18 @@
     href="{{ url_for('static', filename='dog.png') }}"
   />
   <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}" />
-
-
-  <style>
-
-  a.none {
-      text-decoration: none;
-      font-size: 20px;
-  }
-
-</style>
-
-
 </head>
 
 <body>
   <img src="{{ url_for('static', filename='dog.png') }}" class="icon" />
-  <h3>随便玩玩openAI</h3>
-  <br><br>
-  <a class="none" href="/dalle">画图：DALL-E 2</a>
-  <br>
-  <a class="none" href="/davinci">GPT3：Davinci-003</a>
-  <br>
-  <a class="none" href="/codex">代码：Codex</a>
+  <h3>写点儿代码</h3>
+  <form action="/codex" method="post">
+    <input type="text" name="animal" placeholder="写点儿需求" required />
+    <input type="submit" value="给我敲" />
+  </form>
+  {% if result %}  
+  </br></br>
+  <textarea style="width: 500px;height: 1000px;">{{result}}</textarea>
 
+  {% endif %}
 </body>

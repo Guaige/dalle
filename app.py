@@ -7,9 +7,13 @@ app = Flask(__name__)
 openai.api_key = 
 
 
-@app.route("/", methods=("GET", "POST"))
+@app.route('/')
 def index():
-    
+    return render_template("index.html")
+
+@app.route("/dalle", methods=("GET", "POST"))
+def dalle():
+
     if request.method == "POST":
         animal = request.form["animal"]
         since = time.time()
@@ -29,24 +33,72 @@ def index():
         )
         return redirect(url_for("index", result=response.choices[0].text))
         """
-        return redirect(url_for("index", result=response['data'][0]['url']))
+        return redirect(url_for("dalle", result=response['data'][0]['url']))
         #return redirect(url_for("index", result=animal))
     result = request.args.get("result")
-    return render_template("index.html", result=result)
+    return render_template("dalle.html", result=result)
+
+@app.route("/codex", methods=("GET", "POST"))
+def codex():
+    
+    if request.method == "POST":
+        animal = request.form["animal"]
+        since = time.time()
+        response = openai.Completion.create(
+          model="code-davinci-002",
+          prompt=animal,
+          temperature=0,
+          max_tokens=4000,
+          top_p=1,
+          frequency_penalty=0,
+          presence_penalty=0
+        )
+        print('time_gen : ', time.time() - since)
+        since = time.time()
+        codes = response['choices'][0]['text']
+        """
+        response = openai.Completion.create(
+            model="text-davinci-003",
+            prompt=generate_prompt(animal),
+            temperature=0.6,
+        )
+        return redirect(url_for("index", result=response.choices[0].text))
+        """
+        return redirect(url_for("codex", result=response['choices'][0]['text']))
+    result = request.args.get("result")
+    return render_template("codex.html", result=result)
 
 
+@app.route("/davinci", methods=("GET", "POST"))
+def davinci():
+    
+    if request.method == "POST":
+        animal = request.form["animal"]
+        since = time.time()
+        response = openai.Completion.create(
+          model="text-davinci-003",
+          prompt=animal,
+          temperature=0,
+          max_tokens=4000,
+          top_p=1,
+          frequency_penalty=0,
+          presence_penalty=0
+        )
+        print('time_gen : ', time.time() - since)
+        since = time.time()
+        answer = response['choices'][0]['text']
+        """
+        response = openai.Completion.create(
+            model="text-davinci-003",
+            prompt=generate_prompt(animal),
+            temperature=0.6,
+        )
+        return redirect(url_for("index", result=response.choices[0].text))
+        """
+        return redirect(url_for("davinci", result=response['choices'][0]['text']))
+    result = request.args.get("result")
+    return render_template("davinci.html", result=result)
 
-def generate_prompt(animal):
-    return """Suggest three names for an animal that is a superhero.
-
-Animal: Cat
-Names: Captain Sharpclaw, Agent Fluffball, The Incredible Feline
-Animal: Dog
-Names: Ruff the Protector, Wonder Canine, Sir Barks-a-Lot
-Animal: {}
-Names:""".format(
-        animal.capitalize()
-    )
 
 host = '0.0.0.0'
 port = 80
